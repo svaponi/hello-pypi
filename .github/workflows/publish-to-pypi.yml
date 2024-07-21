@@ -1,0 +1,33 @@
+name: Release
+run-name: Publish to PyPi 🚀
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  Run-Tests:
+    uses: ./.github/workflows/run-tests.yml
+    secrets:
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  Publish-to-PyPi:
+    needs: [ Run-Tests ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: poetry install
+      - name: Build package
+        run: poetry build
+      - name: Publish package
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          poetry config pypi-token.pypi $PYPI_TOKEN
+          poetry publish

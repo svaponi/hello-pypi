@@ -1,0 +1,37 @@
+name: Test
+run-name: Run Tests 🧪
+on:
+  push:
+    paths:
+      - 'src/**'
+  workflow_call:
+    secrets:
+      COVERALLS_REPO_TOKEN:
+        required: true
+jobs:
+  Run-Tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.9", "3.10", "3.11", "3.12" ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'poetry'
+      - name: Install dependencies
+        run: |
+          poetry install --with coverage
+      - name: Run tests
+        run: |
+          poetry run coverage run -m pytest
+      - name: Coverage
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          poetry run coveralls
