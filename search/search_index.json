@@ -1,0 +1,1 @@
+{"config":{"indexing":"full","lang":["en"],"min_search_length":3,"prebuild_index":false,"separator":"[\\s\\-]+"},"docs":[{"location":"","text":"Kickstart \ud83d\ude80 your PyPi package project. It comes with GitHub Actions for: Running tests when you src/ dir changes. Publishing on PyPi when you push a new tag.","title":"Home"}]}
