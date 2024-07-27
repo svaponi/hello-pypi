@@ -29,7 +29,7 @@ jobs:
           poetry install --with coverage
       - name: Run tests
         run: |
-          poetry run coverage run -m pytest
+          poetry run coverage run --source=hello -m pytest
       - name: Coverage
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
